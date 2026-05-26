@@ -1,0 +1,21 @@
+{
+    "name": "woo-excel-mng/woocommerce-excel-manager",
+    "description": "مدیریت محصولات متغیر ووکامرس از طریق Excel",
+    "type": "wordpress-plugin",
+    "require": {
+        "php": "^7.4",
+        "phpoffice/phpspreadsheet": "1.28.0"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4.0"
+        },
+        "platform-check": false,
+        "audit": {
+            "block-insecure": false
+        }
+    },
+    "autoload": {
+        "classmap": ["includes/"]
+    }
+}

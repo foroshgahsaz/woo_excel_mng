@@ -1,0 +1,759 @@
+/**
+ * استایل‌های پیشخوان افزونه
+ */
+
+/* ===== ساختار کلی ===== */
+.woo-excel-mng-wrap {
+    margin: 20px 20px 0 0;
+    max-width: 1400px;
+}
+
+.woo-excel-mng-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1d2327;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.woo-excel-mng-title .dashicons {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    color: #2271b1;
+}
+
+/* ===== تب‌بندی ===== */
+.woo-excel-mng-tabs-wrapper {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.woo-excel-mng-tabs {
+    display: flex;
+    background: #f6f7f7;
+    border-bottom: 2px solid #2271b1;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.woo-excel-mng-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #50575e;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    background: transparent;
+}
+
+.woo-excel-mng-tab:hover {
+    background: #fff;
+    color: #2271b1;
+}
+
+.woo-excel-mng-tab.active {
+    background: #fff;
+    color: #2271b1;
+    border-bottom-color: #2271b1;
+}
+
+.woo-excel-mng-tab .tab-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.woo-excel-mng-tab-content {
+    padding: 30px;
+    background: #fff;
+}
+
+/* ===== داشبورد ===== */
+.dashboard-header {
+    margin-bottom: 30px;
+}
+
+.dashboard-header h2 {
+    font-size: 24px;
+    margin: 0 0 10px 0;
+    color: #1d2327;
+}
+
+.dashboard-header .description {
+    color: #646970;
+    font-size: 14px;
+    margin: 0;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.stat-card:nth-child(2) {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.stat-card:nth-child(3) {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.stat-card:nth-child(4) {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.stat-icon {
+    font-size: 48px;
+    opacity: 0.9;
+}
+
+.stat-icon .dashicons {
+    width: 48px;
+    height: 48px;
+    font-size: 48px;
+}
+
+.stat-content h3 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    color: #fff;
+}
+
+.stat-content p {
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.dashboard-section {
+    margin-top: 40px;
+}
+
+.dashboard-section h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #1d2327;
+}
+
+.logs-table-wrapper {
+    overflow-x: auto;
+}
+
+.log-type {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.log-type-products {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.log-type-shipping {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-success {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-error {
+    background: #ffebee;
+    color: #c62828;
+}
+
+/* ===== بخش‌های عمومی ===== */
+.section-header {
+    margin-bottom: 30px;
+}
+
+.section-header h2 {
+    font-size: 24px;
+    margin: 0 0 10px 0;
+    color: #1d2327;
+}
+
+.section-header .description {
+    color: #646970;
+    font-size: 14px;
+    margin: 0;
+}
+
+.upload-section {
+    margin-bottom: 30px;
+}
+
+.upload-box {
+    background: #f9f9f9;
+    border: 2px dashed #c3c4c7;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+}
+
+.upload-box h3 {
+    margin-top: 0;
+    color: #1d2327;
+}
+
+.help-text {
+    color: #646970;
+    margin-bottom: 20px;
+}
+
+.excel-format-list {
+    text-align: right;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    background: #fff;
+    border-radius: 6px;
+    padding: 20px;
+    display: inline-block;
+}
+
+.excel-format-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.excel-format-list li:last-child {
+    border-bottom: none;
+}
+
+.excel-format-list li strong {
+    color: #2271b1;
+    min-width: 150px;
+    display: inline-block;
+}
+
+/* ===== فرم‌ها ===== */
+.upload-form {
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 30px;
+    background: #2271b1;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-weight: 500;
+}
+
+.file-label:hover {
+    background: #135e96;
+}
+
+.file-label input[type="file"] {
+    display: none;
+}
+
+.file-label .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.file-name {
+    display: block;
+    margin-top: 10px;
+    color: #646970;
+    font-style: italic;
+}
+
+.form-actions {
+    margin-top: 20px;
+}
+
+.form-actions .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-box {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 6px;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.info-box h4 {
+    margin-top: 0;
+    color: #856404;
+}
+
+.info-box ul {
+    margin: 10px 0 0 0;
+    padding-right: 20px;
+}
+
+.info-box li {
+    margin-bottom: 8px;
+    color: #856404;
+}
+
+/* ===== تنظیمات ===== */
+.settings-box {
+    background: #f9f9f9;
+    border: 1px solid #c3c4c7;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.settings-box h3 {
+    margin-top: 0;
+    color: #1d2327;
+}
+
+.settings-form .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1d2327;
+}
+
+.settings-form .form-group .required {
+    color: #d63638;
+}
+
+.settings-form .form-group input[type="number"] {
+    width: 100%;
+    max-width: 300px;
+}
+
+.settings-form .description {
+    margin-top: 8px;
+    color: #646970;
+    font-size: 13px;
+}
+
+.woo-excel-mng-settings .settings-section {
+    background: #f8f9fb;
+    border: 1px solid #dcdcde;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 20px;
+}
+
+.woo-excel-mng-settings .settings-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #1d2327;
+}
+
+.woo-excel-mng-settings .settings-section .form-group {
+    max-width: 520px;
+}
+
+.woo-excel-mng-settings .settings-section input[type="number"],
+.woo-excel-mng-settings .settings-section input[type="text"] {
+    max-width: 360px;
+}
+
+.woo-excel-mng-settings .settings-form .form-actions {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e2e4e7;
+}
+
+.woo-excel-mng-settings .settings-form .button {
+    min-width: 160px;
+    justify-content: center;
+}
+
+/* ===== جداول ===== */
+.routes-table-wrapper,
+.formulas-table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.routes-table-wrapper table,
+.formulas-table-wrapper table {
+    margin-top: 0;
+}
+
+.route-price {
+    width: 120px;
+    padding: 5px 8px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.toggle-switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.toggle-switch input:checked + .slider {
+    background-color: #2271b1;
+}
+
+.toggle-switch input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.save-route {
+    margin-top: 5px;
+}
+
+/* ===== فرمول‌ها ===== */
+.add-formula-section {
+    background: #f9f9f9;
+    border: 1px solid #c3c4c7;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.add-formula-section h3 {
+    margin-top: 0;
+    color: #1d2327;
+}
+
+.form-row {
+    margin-bottom: 20px;
+}
+
+.formula-form .form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1d2327;
+}
+
+.formula-form textarea.code {
+    font-family: 'Courier New', monospace;
+    direction: ltr;
+    text-align: left;
+}
+
+.formula-code {
+    background: #f0f0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.formulas-list-section h3 {
+    margin-bottom: 20px;
+    color: #1d2327;
+}
+
+/* ===== پیام‌ها ===== */
+.no-items {
+    text-align: center;
+    padding: 40px 20px;
+    color: #646970;
+}
+
+/* ===== ریسپانسیو ===== */
+@media (max-width: 782px) {
+    .woo-excel-mng-tabs {
+        flex-direction: column;
+    }
+    
+    .woo-excel-mng-tab {
+        border-bottom: 1px solid #ddd;
+        border-left: 3px solid transparent;
+    }
+    
+    .woo-excel-mng-tab.active {
+        border-left-color: #2271b1;
+        border-bottom-color: #ddd;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .woo-excel-mng-tab-content {
+        padding: 20px 15px;
+    }
+}
+
+
+/* ===== نوار پیشرفت Import ===== */
+
+#wem-progress-area {
+    margin-top: 24px;
+}
+
+.wem-progress-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.wem-progress-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* نوار پیشرفت */
+.wem-progress-bar-wrap {
+    margin-bottom: 16px;
+}
+
+.wem-progress-bar-bg {
+    background: #e0e4ea;
+    border-radius: 50px;
+    height: 28px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,.12);
+}
+
+.wem-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2271b1 0%, #1a9ad6 60%, #00c853 100%);
+    background-size: 200% 100%;
+    border-radius: 50px;
+    transition: width 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 10px;
+    min-width: 36px;
+    animation: wemBarShimmer 2s linear infinite;
+    position: relative;
+}
+
+@keyframes wemBarShimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.wem-progress-percent {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,.25);
+    white-space: nowrap;
+}
+
+/* آمار */
+.wem-progress-stats {
+    margin-bottom: 14px;
+}
+
+.wem-stat-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.wem-stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 8px;
+    min-width: 90px;
+    flex: 1;
+}
+
+.wem-stat-done {
+    background: #e8f5e9;
+    border: 1px solid #c8e6c9;
+}
+
+.wem-stat-remaining-box {
+    background: #fff3e0;
+    border: 1px solid #ffe0b2;
+}
+
+.wem-stat-total-box {
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+}
+
+.wem-stat-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1d2327;
+    line-height: 1.2;
+}
+
+.wem-stat-lbl {
+    font-size: 11px;
+    color: #666;
+    margin-top: 3px;
+    text-align: center;
+}
+
+/* لاگ کوچک */
+.wem-mini-log {
+    background: #f6f7f7;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px 14px;
+    max-height: 120px;
+    overflow-y: auto;
+    font-size: 12px;
+    line-height: 1.7;
+    direction: rtl;
+}
+
+.wem-log-line {
+    padding: 1px 0;
+}
+
+.wem-log-info    { color: #555; }
+.wem-log-success { color: #00a32a; font-weight: 600; }
+.wem-log-error   { color: #d63638; font-weight: 600; }
+
+/* نتیجه نهایی */
+.wem-result-box {
+    margin-top: 18px;
+    padding: 18px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.wem-result-success {
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+}
+
+.wem-result-warning {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+}
+
+.wem-result-error {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+}
+
+.wem-result-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #1d2327;
+}
+
+.wem-result-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(0,0,0,.05);
+    max-width: 320px;
+}
+
+.wem-result-row strong {
+    font-size: 15px;
+}
+
+.wem-result-errors {
+    margin-top: 12px;
+    padding: 10px;
+    background: rgba(214,54,56,.08);
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.wem-result-errors ul {
+    margin: 6px 0 0 16px;
+    padding: 0;
+}
+
+.wem-result-errors li {
+    margin-bottom: 3px;
+    color: #d63638;
+}

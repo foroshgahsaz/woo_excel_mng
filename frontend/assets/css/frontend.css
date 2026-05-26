@@ -1,0 +1,789 @@
+/**
+ * استایل‌های Front-end افزونه
+ * پشتیبانی از تعداد اعشاری + طراحی تمیز تسویه حساب
+ */
+
+/* ===== ورودی تعداد/متراژ در صفحه محصول ===== */
+.woo-excel-mng-meterage-wrapper {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.woo-excel-mng-meterage-wrapper .form-row {
+    margin-bottom: 0;
+}
+
+.woo-excel-mng-meterage-wrapper label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.woo-excel-mng-meterage-wrapper .required {
+    color: #d63638;
+}
+
+/* ===== ورودی اعشاری (تعداد و متراژ) ===== */
+.woo-excel-meterage-input,
+.woo-excel-meterage-quantity,
+.woo-excel-decimal-qty,
+.quantity input.qty[inputmode="decimal"] {
+    width: 120px !important;
+    max-width: 200px;
+    padding: 10px 14px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 600;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -moz-appearance: textfield;
+}
+
+.woo-excel-meterage-input:focus,
+.woo-excel-meterage-quantity:focus,
+.woo-excel-decimal-qty:focus,
+.quantity input.qty[inputmode="decimal"]:focus {
+    border-color: #2271b1;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.15);
+}
+
+/* حذف دکمه‌های بالا/پایین مرورگر */
+.woo-excel-decimal-qty::-webkit-inner-spin-button,
+.woo-excel-decimal-qty::-webkit-outer-spin-button,
+.woo-excel-meterage-quantity::-webkit-inner-spin-button,
+.woo-excel-meterage-quantity::-webkit-outer-spin-button,
+.quantity input.qty::-webkit-inner-spin-button,
+.quantity input.qty::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* پیش‌نمایش قیمت */
+.woo-excel-price-preview {
+    display: block;
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: #e8f5e9;
+    border: 1px solid #4caf50;
+    border-radius: 8px;
+    color: #2e7d32;
+}
+
+.woo-excel-calculated-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1b5e20;
+    margin-right: 5px;
+}
+
+/* ===== نمایش متراژ در سبد خرید ===== */
+.woocommerce-cart .cart_item .product-name small {
+    display: block;
+    color: #646970;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.woo-excel-unit-price {
+    color: #646970;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+/* ===== ورودی‌های تعداد و متراژ در سبد خرید ===== */
+.woo-excel-cart-qty-cell,
+.woo-excel-cart-meterage-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.woo-excel-cart-qty-cell .woo-excel-custom-qty-input,
+.woo-excel-cart-meterage-cell .woo-excel-meterage-input {
+    width: 100px !important;
+    max-width: 100%;
+    padding: 10px 14px !important;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    margin: 0;
+}
+
+.woocommerce-cart-form__contents thead th.product-meteraj,
+.woocommerce-cart-form__contents td.product-meteraj,
+.woocommerce-cart-form__contents td.product-quantity {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.woocommerce-cart-form__contents .woo-excel-meterage-qty label,
+.woocommerce-cart-form__contents .custom-quantity-in-cart label {
+    display: none !important;
+}
+
+/* ===== بلاک اطلاعات حمل‌ونقل ===== */
+.woo-excel-shipping-info-box {
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.woo-excel-shipping-info-box h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #f0f0f0;
+    color: #1d2327;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.woo-excel-destination-selector {
+    margin-bottom: 20px;
+}
+
+.woo-excel-destination-selector label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #1d2327;
+    font-weight: 600;
+}
+
+.woo-excel-city-select select,
+.woo-excel-city-select .select2-container {
+    width: 100% !important;
+    max-width: 350px;
+    padding: 10px 14px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #fff;
+    transition: border-color 0.2s ease;
+}
+
+.woo-excel-city-select select:focus {
+    border-color: #2271b1;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.15);
+}
+
+/* پیام کوتاه در سبد خرید */
+.woo-excel-shipping-minimal {
+    border: 1px solid #e2e4e7;
+    border-radius: 12px;
+    padding: 16px 20px;
+    background: #fff;
+}
+
+.woo-excel-shipping-note {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: #f0f6fc;
+    border: 1px solid #c3d4e5;
+    border-radius: 8px;
+    color: #1d2327;
+    font-weight: 500;
+}
+
+.woo-excel-shipping-note .dashicons {
+    color: #2271b1;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.woo-excel-shipping-note p {
+    margin: 0;
+}
+
+/* باکس حمل‌ونقل در تسویه حساب */
+.woo-excel-shipping-payment-box {
+    border: 2px solid #e2e4e7;
+    border-radius: 12px;
+    padding: 24px;
+    background: #fff;
+}
+
+.woo-excel-checkout-section {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+/* هشدار تغییر نوع خودرو */
+.woo-excel-vehicle-change-alert {
+    background: #fff8e1;
+    border: 2px solid #f9a825;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    color: #795548;
+}
+
+.woo-excel-vehicle-change-alert strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.woo-excel-vehicle-change-alert p {
+    margin: 4px 0 0 0;
+    font-size: 14px;
+}
+
+/* حمل رایگان */
+.woo-excel-free-shipping-badge {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.woo-excel-free-shipping-badge .dashicons {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+}
+
+.woo-excel-free-shipping-badge strong {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.woo-excel-free-shipping-badge p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* اطلاعات حمل */
+.woo-excel-shipping-details {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.woo-excel-shipping-info {
+    background: #fafafa;
+    padding: 18px;
+    border-radius: 8px;
+}
+
+.woo-excel-shipping-info p {
+    margin: 12px 0;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.woo-excel-shipping-info .vehicle-name {
+    font-weight: 700;
+    color: #2271b1;
+    font-size: 16px;
+}
+
+.woo-excel-shipping-info .shipping-cost {
+    font-weight: 700;
+    color: #d63638;
+    font-size: 16px;
+}
+
+/* نوار پیشرفت حمل رایگان */
+.woo-excel-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.woo-excel-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #43e97b, #38f9d7);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.woo-excel-free-shipping-progress {
+    margin-top: 16px;
+    padding: 14px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+
+.woo-excel-free-shipping-progress p {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+/* پیشنهاد Premium */
+.woo-excel-premium-suggestion {
+    background: #fff8e1;
+    border: 2px solid #ffc107;
+    border-radius: 8px;
+    padding: 18px;
+    margin-top: 16px;
+}
+
+.woo-excel-premium-suggestion .premium-notice {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #795548;
+}
+
+.woo-excel-premium-suggestion p {
+    margin: 8px 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #795548;
+}
+
+.woo-excel-premium-suggestion .premium-remaining {
+    font-size: 15px;
+    font-weight: 700;
+    color: #d63638;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(121, 85, 72, 0.2);
+}
+
+/* انتخاب شهر */
+.woo-excel-select-city-notice {
+    background: #fff8e1;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    color: #795548;
+}
+
+.woo-excel-no-route {
+    background: #ffebee;
+    border: 1px solid #ef9a9a;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    color: #c62828;
+}
+
+/* حالت به‌روزرسانی */
+.woo-excel-updating {
+    opacity: 0.5;
+    pointer-events: none;
+    position: relative;
+}
+
+/* label متراژ در صفحه محصول */
+table.cart .quantity label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+/* ================================================================== */
+/* ===== استایل‌های صفحه تسویه حساب (Checkout) - طراحی مینیمال ===== */
+/* ================================================================== */
+
+/* ساختار کلی: تک ستونه */
+.woocommerce-checkout .col2-set {
+    display: block !important;
+    width: 100%;
+    max-width: 100%;
+}
+
+.woocommerce-checkout .col2-set .col-1 {
+    width: 100% !important;
+    float: none !important;
+    max-width: 100%;
+}
+
+.woocommerce-checkout .col2-set .col-2 {
+    display: none !important;
+}
+
+/* کارت اصلی (billing + shipping) */
+.woocommerce-checkout .woocommerce-billing-fields {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 20px;
+}
+
+.woocommerce-checkout .woocommerce-billing-fields h3,
+.woocommerce-checkout .woocommerce-billing-fields > h3:first-child {
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* فیلدهای فرم - مینیمال */
+.woocommerce-checkout .form-row {
+    margin-bottom: 14px;
+}
+
+.woocommerce-checkout .form-row label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    font-size: 13px;
+    color: #555;
+}
+
+.woocommerce-checkout .form-row input[type="text"],
+.woocommerce-checkout .form-row input[type="tel"],
+.woocommerce-checkout .form-row input[type="email"],
+.woocommerce-checkout .form-row textarea,
+.woocommerce-checkout .form-row select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background: #fff;
+    transition: border-color 0.2s ease;
+}
+
+.woocommerce-checkout .form-row input:focus,
+.woocommerce-checkout .form-row textarea:focus,
+.woocommerce-checkout .form-row select:focus {
+    border-color: #666;
+    outline: none;
+}
+
+.woocommerce-checkout .form-row textarea {
+    min-height: 70px;
+    resize: vertical;
+}
+
+/* فیلدهای نام و نام خانوادگی کنار هم */
+.woocommerce-checkout .form-row-first,
+.woocommerce-checkout .form-row-last {
+    width: 48% !important;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.woocommerce-checkout .form-row-first {
+    margin-left: 4% !important;
+}
+
+/* === بخش حمل‌ونقل inline در billing === */
+.woo-excel-shipping-inline {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+}
+
+.woo-excel-shipping-inline h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.woo-excel-shipping-inline .woo-excel-city-select {
+    margin-bottom: 12px;
+}
+
+.woo-excel-shipping-inline .woo-excel-city-select select {
+    width: 100%;
+    max-width: 280px;
+}
+
+.woo-excel-shipping-result {
+    background: #f9f9f9;
+    border-radius: 4px;
+    padding: 12px;
+}
+
+.woo-excel-shipping-cost-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 13px;
+}
+
+.woo-excel-shipping-cost-info .label {
+    color: #666;
+}
+
+.woo-excel-shipping-cost-info .value {
+    font-weight: 600;
+    color: #333;
+}
+
+.woo-excel-shipping-cost-info .value.cost {
+    color: #c62828;
+}
+
+.woo-excel-free-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2e7d32;
+    font-size: 14px;
+}
+
+.woo-excel-free-badge .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+.woo-excel-select-notice {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+}
+
+/* جدول خلاصه سفارش - مینیمال */
+.woocommerce-checkout #order_review_heading {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0;
+    margin-top: 0;
+    overflow: hidden;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    border: none;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table thead th {
+    background: #fafafa;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: right;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table td,
+.woocommerce-checkout .woocommerce-checkout-review-order-table th {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+    text-align: right;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table tbody .product-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table tbody .product-total {
+    font-weight: 600;
+    color: #333;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot th {
+    font-weight: 500;
+    background: transparent;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot .order-total th,
+.woocommerce-checkout .woocommerce-checkout-review-order-table tfoot .order-total td {
+    font-size: 15px;
+    font-weight: 700;
+    color: #333;
+    border-top: 1px solid #e0e0e0;
+    background: #fafafa;
+    padding: 14px 16px;
+}
+
+/* مخفی کردن سطر حمل‌ونقل پیش‌فرض ووکامرس */
+.woocommerce-checkout .woocommerce-checkout-review-order-table .woocommerce-shipping-totals {
+    display: none;
+}
+
+/* بخش پرداخت - مینیمال */
+.woocommerce-checkout #payment {
+    background: #fafafa;
+    border-radius: 0 0 8px 8px;
+    padding: 16px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.woocommerce-checkout #payment .payment_methods {
+    padding: 0 !important;
+    margin: 0 0 14px 0 !important;
+    border: none !important;
+    background: transparent !important;
+    list-style: none;
+}
+
+.woocommerce-checkout #payment .payment_methods li {
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.2s ease;
+    list-style: none;
+}
+
+.woocommerce-checkout #payment .payment_methods li:hover,
+.woocommerce-checkout #payment .payment_methods li.active {
+    border-color: #666;
+}
+
+.woocommerce-checkout #payment .payment_methods li label {
+    font-weight: 500;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.woocommerce-checkout #payment .payment_box {
+    background: #f5f5f5;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 8px;
+    color: #555;
+    font-size: 13px;
+}
+
+/* دکمه ثبت سفارش - مینیمال */
+.woocommerce-checkout #place_order {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.woocommerce-checkout #place_order:hover {
+    background: #555;
+}
+
+.woocommerce-checkout #place_order:active {
+    background: #222;
+}
+
+/* مخفی کردن عناصر اضافی در Checkout */
+.woocommerce-checkout .woocommerce-additional-fields,
+.woocommerce-checkout #ship-to-different-address,
+.woocommerce-checkout .woocommerce-shipping-fields {
+    display: none !important;
+}
+
+/* حذف padding اضافی */
+.woocommerce-checkout .woocommerce-NoticeGroup {
+    margin-bottom: 16px;
+}
+
+/* پیام‌های خطا و هشدار */
+.woocommerce-checkout .woocommerce-error,
+.woocommerce-checkout .woocommerce-message,
+.woocommerce-checkout .woocommerce-info {
+    border-radius: 4px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+}
+
+/* جمع وزن */
+.woo-excel-total-weight th,
+.woo-excel-total-weight td {
+    font-weight: 500;
+    color: #333;
+}
+
+/* ===== ریسپانسیو ===== */
+@media (max-width: 768px) {
+    .woo-excel-meterage-input,
+    .woo-excel-meterage-quantity,
+    .woo-excel-decimal-qty {
+        max-width: 100%;
+    }
+    
+    /* فیلدهای checkout تمام عرض */
+    .woocommerce-checkout .form-row-first,
+    .woocommerce-checkout .form-row-last {
+        width: 100% !important;
+        display: block;
+        margin-left: 0 !important;
+    }
+    
+    .woocommerce-checkout .woocommerce-billing-fields {
+        padding: 20px;
+    }
+    
+    .woocommerce-checkout .woocommerce-checkout-review-order-table td,
+    .woocommerce-checkout .woocommerce-checkout-review-order-table th {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+    
+    .woo-excel-shipping-info-box {
+        padding: 18px;
+    }
+    
+    .woo-excel-shipping-info p {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .woo-excel-premium-suggestion {
+        padding: 14px;
+    }
+    
+    .woo-excel-premium-suggestion p {
+        font-size: 13px;
+    }
+
+    .woocommerce-checkout #place_order {
+        font-size: 16px;
+        padding: 14px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .woo-excel-shipping-info-box h3 {
+        font-size: 16px;
+    }
+    
+    .woo-excel-free-shipping-badge strong {
+        font-size: 17px;
+    }
+}
