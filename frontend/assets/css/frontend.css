@@ -3,6 +3,28 @@
  * پشتیبانی از تعداد اعشاری + طراحی تمیز تسویه حساب
  */
 
+/* ===== فیلدهای تعداد و متراژ در صفحه محصول ===== */
+.woo-excel-meterage-field-wrap,
+.woo-excel-custom-quantity-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: flex-end;
+}
+
+.woo-excel-meterage-label,
+.woo-excel-custom-qty-label {
+    font-weight: 600;
+    margin: 0;
+}
+
+.woo-excel-meterage-field-wrap .woo-excel-meterage-quantity,
+.woo-excel-custom-quantity-field .woo-excel-custom-qty-product {
+    width: 120px;
+    text-align: center;
+}
+
 /* ===== ورودی تعداد/متراژ در صفحه محصول ===== */
 .woo-excel-mng-meterage-wrapper {
     margin: 20px 0;

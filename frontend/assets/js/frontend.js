@@ -153,26 +153,34 @@
             var $form = $('form.variations_form');
 
             var hasFormula = !!(variation && variation.woo_excel_has_formula);
+            var usesMeterage = !!(variation && variation.woo_excel_uses_meterage);
             if ($form.length) {
                 $form.data('woo_excel_has_formula', hasFormula);
+                $form.data('woo_excel_uses_meterage', usesMeterage);
             }
 
-            // تنظیم اعشاری برای همه
             setupProductQuantityInputs();
 
             if (!hasFormula) {
-                if ($quantityLabel.length) {
-                    $quantityLabel.text('تعداد:');
-                }
+                $('.woo-excel-meterage-field-wrap').hide();
+                $('.woo-excel-custom-quantity-field').hide();
                 $('.woo-excel-price-preview').hide();
                 return;
             }
 
-            // تغییر label به متراژ
-            if ($quantityLabel.length) {
-                $quantityLabel.text('متراژ (متر):');
-            } else {
-                $quantityInput.before('<label for="quantity">متراژ (متر):</label>');
+            $('.woo-excel-custom-quantity-field').show();
+
+            if (!usesMeterage) {
+                $('.woo-excel-meterage-field-wrap').hide();
+                $('.woo-excel-no-meterage-field').show();
+                return;
+            }
+
+            $('.woo-excel-meterage-field-wrap').show();
+            $('.woo-excel-no-meterage-field').hide();
+            var $meterageLabel = $('.woo-excel-meterage-label');
+            if ($meterageLabel.length) {
+                $meterageLabel.text('متراژ (متر):');
             }
 
             // // اضافه کردن preview قیمت
@@ -186,9 +194,11 @@
             var $form = $('form.variations_form');
             if ($form.length) {
                 $form.data('woo_excel_has_formula', false);
+                $form.data('woo_excel_uses_meterage', false);
             }
             $('.woo-excel-price-preview').hide();
-            $('.quantity label').text('تعداد:');
+            $('.woo-excel-meterage-field-wrap').hide();
+            $('.woo-excel-custom-quantity-field').hide();
         });
 
         // ===== نرمال‌سازی ورودی هنگام تایپ =====
@@ -203,40 +213,50 @@
         
         // ===== محاسبه قیمت هنگام تغییر quantity (متراژ) - فقط برای فرمول‌دار =====
         var calculationTimeout;
-        $(document).on('input change', '.quantity input.qty, .quantity input.woo-excel-meterage-quantity', function() {
-            var $input = $(this);
+        function scheduleFormulaPriceCalculation() {
             var $form = $('form.variations_form');
             if (!$form.length || !$form.data('woo_excel_has_formula')) {
                 return;
             }
-            
-            clearTimeout(calculationTimeout);
-            
-            var meterageValue = normalizeDecimalInput($input.val());
-            var meterage = normalizeNumericValue(meterageValue);
-            if (isNaN(meterage) || meterage < meterageMin) {
-                $('.woo-excel-price-preview').hide();
-                return;
-            }
-            
-            // دریافت Variation ID
+
             var variationId = $('input[name="variation_id"]').val();
             if (!variationId) {
                 return;
             }
-            
-            // نمایش پیام در حال محاسبه
-            var $preview = $('.woo-excel-price-preview');
-            $preview.show();
+
+            var usesMeterage = $form.data('woo_excel_uses_meterage');
+            var meterage = 1;
+
+            if (usesMeterage) {
+                var $meterageInput = $('.woo-excel-meterage-quantity').first();
+                var meterageValue = normalizeDecimalInput($meterageInput.val());
+                meterage = normalizeNumericValue(meterageValue);
+                if (isNaN(meterage) || meterage < meterageMin) {
+                    $('.woo-excel-price-preview').hide();
+                    return;
+                }
+            }
+
+            var customQty = parseInt($('#custom_quantity, .woo-excel-custom-qty-product').first().val(), 10);
+            if (isNaN(customQty) || customQty < 1) {
+                customQty = 1;
+            }
+
+            clearTimeout(calculationTimeout);
+            $('.woo-excel-price-preview').show();
             $('.woo-excel-calculated-price').text(wooExcelMngFrontend.strings.calculating);
-            
+
             calculationTimeout = setTimeout(function() {
-                calculatePrice(variationId, meterage);
+                calculatePrice(variationId, meterage, customQty);
             }, 500);
+        }
+
+        $(document).on('input change', '.quantity input.qty, .quantity input.woo-excel-meterage-quantity, #custom_quantity, .woo-excel-custom-qty-product', function() {
+            scheduleFormulaPriceCalculation();
         });
         
         // ===== تابع محاسبه قیمت =====
-        function calculatePrice(variationId, meterage) {
+        function calculatePrice(variationId, meterage, customQuantity) {
             $.ajax({
                 url: wooExcelMngFrontend.ajax_url,
                 type: 'POST',
@@ -244,7 +264,8 @@
                     action: 'woo_excel_mng_calculate_price',
                     nonce: wooExcelMngFrontend.nonce,
                     variation_id: variationId,
-                    meterage: meterage
+                    meterage: meterage,
+                    custom_quantity: customQuantity || 1
                 },
                 success: function(response) {
                     if (response.success) {
@@ -278,21 +299,43 @@
             
             // بررسی فرمول‌دار بودن
             var isFormula = $form.length && $form.data('woo_excel_has_formula');
-            var minVal = isFormula ? meterageMin : decimalQtyMin;
-            
-            if (isNaN(numValue) || numValue < minVal) {
+            var usesMeterage = $form.length && $form.data('woo_excel_uses_meterage');
+            var minVal = (isFormula && usesMeterage) ? meterageMin : decimalQtyMin;
+
+            if (isFormula && usesMeterage && (isNaN(numValue) || numValue < minVal)) {
                 e.preventDefault();
-                if (isFormula) {
-                    alert(wooExcelMngFrontend.strings.enter_meterage || 'لطفاً متراژ را وارد کنید.');
-                } else {
-                    alert(wooExcelMngFrontend.strings.enter_quantity || 'لطفاً تعداد معتبر وارد کنید.');
-                }
+                alert(wooExcelMngFrontend.strings.enter_meterage || 'لطفاً متراژ را وارد کنید.');
                 $quantityInput.focus();
                 return false;
             }
 
-            if (isFormula) {
-                // مدل فرمول: quantity=1, meterage جدا ذخیره می‌شود
+            if (!isFormula && (isNaN(numValue) || numValue < minVal)) {
+                e.preventDefault();
+                alert(wooExcelMngFrontend.strings.enter_quantity || 'لطفاً تعداد معتبر وارد کنید.');
+                $quantityInput.focus();
+                return false;
+            }
+
+            var $customQty = $('#custom_quantity, .woo-excel-custom-qty-product').first();
+            if (isFormula && $customQty.length) {
+                var customQtyVal = parseInt($customQty.val(), 10);
+                if (isNaN(customQtyVal) || customQtyVal < 1) {
+                    e.preventDefault();
+                    alert('لطفاً تعداد معتبر وارد کنید (حداقل 1).');
+                    $customQty.focus();
+                    return false;
+                }
+                $customQty.val(customQtyVal);
+            }
+
+            if (isFormula && !usesMeterage) {
+                if ($(this).find('input[name="quantity"]').length === 0) {
+                    $(this).append('<input type="hidden" name="quantity" value="1">');
+                }
+                return;
+            }
+
+            if (isFormula && usesMeterage) {
                 if ($quantityInput.attr('name') === 'woo_excel_meterage') {
                     // ورودی سفارشی: مطمئن شو hidden quantity=1 وجود داره
                     if ($(this).find('input[name="quantity"]').length === 0) {

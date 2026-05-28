@@ -33,7 +33,7 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
 }
 
 // تعریف ثابت‌های افزونه
-define('WOO_EXCEL_MNG_VERSION', '1.0.34');
+define('WOO_EXCEL_MNG_VERSION', '1.0.35');
 define('WOO_EXCEL_MNG_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WOO_EXCEL_MNG_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('WOO_EXCEL_MNG_PLUGIN_BASENAME', plugin_basename(__FILE__));

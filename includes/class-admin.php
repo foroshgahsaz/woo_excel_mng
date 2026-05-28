@@ -482,6 +482,10 @@ class Woo_Excel_Mng_Admin
     /**
      * مدیریت ذخیره تنظیمات عمومی
      */
+
+    /**
+     * مدیریت ذخیره تنظیمات عمومی
+     */
     private function handle_save_general_settings()
     {
         if (isset($_POST['woo_excel_mng_origin_city'])) {
@@ -512,6 +516,14 @@ class Woo_Excel_Mng_Admin
         if (isset($_POST['woo_excel_mng_nissan_max_length'])) {
             $nissan_max_length = floatval(str_replace(',', '.', (string) $_POST['woo_excel_mng_nissan_max_length']));
             update_option('woo_excel_mng_nissan_max_length', $nissan_max_length);
+        }
+
+        // ذخیره محصولاتی که متراژ برای آن‌ها غیرفعال می‌شود
+        if (isset($_POST['disable_meterage_products']) && is_array($_POST['disable_meterage_products'])) {
+            $disabled_products = array_map('intval', $_POST['disable_meterage_products']);
+            update_option('woo_excel_mng_disable_meterage_products', $disabled_products);
+        } else {
+            update_option('woo_excel_mng_disable_meterage_products', array());
         }
 
         add_action('admin_notices', function () {
