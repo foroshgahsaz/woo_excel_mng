@@ -43,7 +43,14 @@ class Woo_Excel_Mng_Excel_Parser
         if (!class_exists('ZipArchive') && !extension_loaded('zip')) {
             return array(
                 'success' => false,
-                'message' => __('افزونه ZipArchive در PHP فعال نیست. لطفاً آن را در php.ini فعال کنید.', 'woo-excel-mng')
+                'message' => __('افزونه ZipArchive در PHP فعال نیست. لطفاً ext-zip را در php.ini فعال کنید.', 'woo-excel-mng')
+            );
+        }
+
+        if (!extension_loaded('gd')) {
+            return array(
+                'success' => false,
+                'message' => __('افزونه GD در PHP فعال نیست. لطفاً ext-gd را در php.ini فعال کنید (در XAMPP: extension=gd).', 'woo-excel-mng')
             );
         }
 

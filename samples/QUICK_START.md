@@ -18,6 +18,44 @@
 
 ---
 
+## پیش‌نیاز نصب Composer (XAMPP / Windows)
+
+قبل از `composer install` این extensionها باید در PHP فعال باشند:
+
+- `ext-zip` — خواندن فایل `.xlsx`
+- `ext-gd` — پیش‌نیاز PhpSpreadsheet
+
+### فعال‌سازی در XAMPP
+
+1. فایل `C:\xampp\php\php.ini` را باز کنید
+2. این خطوط را پیدا کنید و `;` ابتدای آن‌ها را بردارید:
+
+```ini
+extension=gd
+extension=zip
+```
+
+3. XAMPP Control Panel → Apache را Stop و Start کنید
+4. در CMD بررسی کنید:
+
+```bash
+php -m | findstr /i "gd zip"
+```
+
+5. سپس در پوشه افزونه:
+
+```bash
+composer install
+```
+
+اگر فقط برای تست موقت می‌خواهید نصب کنید:
+
+```bash
+composer install --ignore-platform-req=ext-gd
+```
+
+---
+
 ## روش 2: تبدیل خودکار با PHP (نیاز به PhpSpreadsheet)
 
 اگر PhpSpreadsheet نصب شده باشد:
