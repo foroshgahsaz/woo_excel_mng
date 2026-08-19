@@ -10,6 +10,29 @@ if (!defined('ABSPATH')) {
 
 class Woo_Excel_Mng_Excel_Parser
 {
+    /**
+     * نرمال‌سازی مقادیر عددی Excel (مثل 0.14000000000000001 → 0.14)
+     */
+    private static function normalize_cell_value($value)
+    {
+        if ($value === null || $value === '') {
+            return '';
+        }
+
+        if (is_numeric($value)) {
+            $number = floatval($value);
+
+            if (abs($number - round($number)) < 0.0000001) {
+                return (string) (int) round($number);
+            }
+
+            $formatted = rtrim(rtrim(number_format($number, 6, '.', ''), '0'), '.');
+
+            return $formatted === '' ? '0' : $formatted;
+        }
+
+        return trim(strval($value));
+    }
 
     /**
      * بررسی وجود PhpSpreadsheet و پیش‌نیازها
@@ -109,17 +132,17 @@ class Woo_Excel_Mng_Excel_Parser
                 if (empty(array_filter($row))) {
                     continue;
                 }
-                $length = isset($row[$column_indexes['طول']]) ? trim(strval($row[$column_indexes['طول']])) : '';
-                $color = isset($row[$column_indexes['رنگ']]) ? trim(strval($row[$column_indexes['رنگ']])) : '';
-                $thickness = isset($row[$column_indexes['ضخامت']]) ? trim(strval($row[$column_indexes['ضخامت']])) : '';
+                $length = isset($row[$column_indexes['طول']]) ? self::normalize_cell_value($row[$column_indexes['طول']]) : '';
+                $color = isset($row[$column_indexes['رنگ']]) ? self::normalize_cell_value($row[$column_indexes['رنگ']]) : '';
+                $thickness = isset($row[$column_indexes['ضخامت']]) ? self::normalize_cell_value($row[$column_indexes['ضخامت']]) : '';
 
                 // خواندن وزن (حذف جداکننده هزارگان)
-                $weight_raw = isset($row[$column_indexes['وزن (کیلوگرم)']]) ? strval($row[$column_indexes['وزن (کیلوگرم)']]) : '0';
+                $weight_raw = isset($row[$column_indexes['وزن (کیلوگرم)']]) ? self::normalize_cell_value($row[$column_indexes['وزن (کیلوگرم)']]) : '0';
                 $weight_raw = str_replace(array(',', '٬', ' '), '', $weight_raw);
                 $weight = floatval($weight_raw);
 
                 // خواندن قیمت (حذف جداکننده هزارگان)
-                $price_raw = isset($row[$column_indexes['قیمت پایه']]) ? strval($row[$column_indexes['قیمت پایه']]) : '0';
+                $price_raw = isset($row[$column_indexes['قیمت پایه']]) ? self::normalize_cell_value($row[$column_indexes['قیمت پایه']]) : '0';
                 $price_raw = str_replace(array(',', '٬', ' '), '', $price_raw);
                 $base_price = floatval($price_raw);
 
@@ -140,7 +163,11 @@ class Woo_Excel_Mng_Excel_Parser
                 'data' => $products_data,
                 'count' => count($products_data)
             );
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            if (class_exists('Woo_Excel_Mng_Logger')) {
+                Woo_Excel_Mng_Logger::exception($e, array('file_path' => $file_path), 'excel');
+            }
+
             return array(
                 'success' => false,
                 'message' => sprintf(__('خطا در خواندن فایل: %s', 'woo-excel-mng'), $e->getMessage())
@@ -230,7 +257,11 @@ class Woo_Excel_Mng_Excel_Parser
                 'data' => $shipping_data,
                 'count' => count($shipping_data)
             );
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
+            if (class_exists('Woo_Excel_Mng_Logger')) {
+                Woo_Excel_Mng_Logger::exception($e, array('file_path' => $file_path), 'shipping');
+            }
+
             return array(
                 'success' => false,
                 'message' => sprintf(__('خطا در خواندن فایل: %s', 'woo-excel-mng'), $e->getMessage())

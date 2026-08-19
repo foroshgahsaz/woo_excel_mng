@@ -120,6 +120,11 @@ class Woo_Excel_Mng
         // بارگذاری کلاس‌های مورد نیاز
         $this->load_dependencies();
 
+        if (class_exists('Woo_Excel_Mng_Logger')) {
+            Woo_Excel_Mng_Logger::ensure_log_dir();
+            Woo_Excel_Mng_Logger::register_shutdown_handler();
+        }
+
         // راه‌اندازی کلاس سازگاری (باید اول باشد)
         if (class_exists('Woo_Excel_Mng_Compatibility')) {
             new Woo_Excel_Mng_Compatibility();
@@ -144,6 +149,7 @@ class Woo_Excel_Mng
         // ترتیب بارگذاری مهم است
         $required_classes = array(
             'database',              // اول: برای activate
+            'logger',                // سیستم لاگ
             'excel-parser',          // دوم: برای پردازش Excel
             'products',              // سوم: برای محصولات
             'shipping',              // چهارم: برای حمل‌ونقل
@@ -189,6 +195,16 @@ class Woo_Excel_Mng
             Woo_Excel_Mng_Database::create_tables();
         } catch (Exception $e) {
             wp_die(sprintf(__('خطا در ایجاد جداول پایگاه داده: %s', 'woo-excel-mng'), $e->getMessage()));
+        }
+
+        if (class_exists('Woo_Excel_Mng_Products')) {
+            require_once WOO_EXCEL_MNG_PLUGIN_DIR . 'includes/class-products.php';
+            Woo_Excel_Mng_Products::ensure_global_attributes();
+        }
+
+        if (class_exists('Woo_Excel_Mng_Logger')) {
+            require_once WOO_EXCEL_MNG_PLUGIN_DIR . 'includes/class-logger.php';
+            Woo_Excel_Mng_Logger::ensure_log_dir();
         }
 
         // تنظیمات پیش‌فرض
