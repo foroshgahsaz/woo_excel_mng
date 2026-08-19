@@ -191,6 +191,11 @@ class Woo_Excel_Mng
             wp_die(sprintf(__('خطا در ایجاد جداول پایگاه داده: %s', 'woo-excel-mng'), $e->getMessage()));
         }
 
+        if (class_exists('Woo_Excel_Mng_Products')) {
+            require_once WOO_EXCEL_MNG_PLUGIN_DIR . 'includes/class-products.php';
+            Woo_Excel_Mng_Products::ensure_global_attributes();
+        }
+
         // تنظیمات پیش‌فرض
         if (!get_option('woo_excel_mng_free_shipping_threshold')) {
             update_option('woo_excel_mng_free_shipping_threshold', 20000000);

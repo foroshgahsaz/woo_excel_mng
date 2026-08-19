@@ -11,6 +11,55 @@ class Woo_Excel_Mng_Products
     const ATTR_THICKNESS        = 'pa_thickness';
 
     /**
+     * اطمینان از وجود attributeهای سراسری ووکامرس (رنگ و ضخامت)
+     */
+    public static function ensure_global_attributes()
+    {
+        if (!function_exists('wc_create_attribute') || !function_exists('wc_attribute_taxonomy_name')) {
+            return false;
+        }
+
+        $attributes = array(
+            'color'     => __('رنگ', 'woo-excel-mng'),
+            'thickness' => __('ضخامت', 'woo-excel-mng'),
+        );
+
+        $created = false;
+
+        foreach ($attributes as $slug => $label) {
+            $taxonomy = wc_attribute_taxonomy_name($slug);
+
+            if (taxonomy_exists($taxonomy)) {
+                continue;
+            }
+
+            $attribute_id = wc_create_attribute(array(
+                'name'         => $label,
+                'slug'         => $slug,
+                'type'         => 'select',
+                'order_by'     => 'menu_order',
+                'has_archives' => false,
+            ));
+
+            if (is_wp_error($attribute_id)) {
+                continue;
+            }
+
+            $created = true;
+        }
+
+        if ($created) {
+            delete_transient('wc_attribute_taxonomies');
+
+            if (class_exists('WC_Post_Types')) {
+                WC_Post_Types::register_taxonomies();
+            }
+        }
+
+        return taxonomy_exists(self::ATTR_COLOR) && taxonomy_exists(self::ATTR_THICKNESS);
+    }
+
+    /**
      * دریافت یا ایجاد term با کش (سریع‌تر از فراخوانی مکرر term_exists)
      *
      * @param string $name
@@ -33,10 +82,9 @@ class Woo_Excel_Mng_Products
         $term = term_exists($name, $taxonomy);
         if (!$term) {
             $term = wp_insert_term($name, $taxonomy);
-        }
-
-        if (is_wp_error($term) || !$term) {
-            return null;
+            if (is_wp_error($term)) {
+                return null;
+            }
         }
 
         $term_id = is_array($term) ? (int) $term['term_id'] : (int) $term->term_id;
@@ -135,6 +183,15 @@ class Woo_Excel_Mng_Products
                 'created' => 0,
                 'updated' => 0,
                 'errors'  => array(sprintf('محصول #%d متغیر نیست یا یافت نشد.', $product_id)),
+            );
+        }
+
+        if (!self::ensure_global_attributes()) {
+            return array(
+                'success' => false,
+                'created' => 0,
+                'updated' => 0,
+                'errors'  => array(__('ویژگی‌های «رنگ» و «ضخامت» در ووکامرس ایجاد نشدند. لطفاً ووکامرس را بررسی کنید.', 'woo-excel-mng')),
             );
         }
 
@@ -262,7 +319,7 @@ class Woo_Excel_Mng_Products
 
             WC_Product_Variable::sync($product_id);
             wc_delete_product_transients($product_id);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $errors[] = $e->getMessage();
         }
 

@@ -208,6 +208,33 @@
                 $log.append('<div class="wem-log-line ' + cls + '">' + text + '</div>');
                 $log.scrollTop($log[0].scrollHeight);
             },
+
+            parseAjaxError: function(xhr, defaultMsg) {
+                if (xhr.responseJSON && xhr.responseJSON.data) {
+                    return typeof xhr.responseJSON.data === 'string'
+                        ? xhr.responseJSON.data
+                        : defaultMsg;
+                }
+
+                if (xhr.responseText) {
+                    try {
+                        var parsed = JSON.parse(xhr.responseText);
+                        if (parsed && parsed.data) {
+                            return typeof parsed.data === 'string' ? parsed.data : defaultMsg;
+                        }
+                    } catch (e) {}
+
+                    if (xhr.responseText.indexOf('Fatal error') !== -1 || xhr.responseText.indexOf('Parse error') !== -1) {
+                        return defaultMsg + ' (خطای PHP در سرور — WP_DEBUG_LOG را بررسی کنید)';
+                    }
+                }
+
+                if (xhr.status) {
+                    return defaultMsg + ' (HTTP ' + xhr.status + ')';
+                }
+
+                return defaultMsg;
+            },
             
             start: function(file) {
                 var self = this;
@@ -268,8 +295,8 @@
 
                         self.processBatch();
                     },
-                    error: function() {
-                        self.showError('خطا در ارتباط با سرور هنگام آپلود.');
+                    error: function(xhr) {
+                        self.showError(self.parseAjaxError(xhr, 'خطا در ارتباط با سرور هنگام آپلود.'));
                     }
                 });
             },
@@ -318,8 +345,8 @@
                             setTimeout(function() { self.processBatch(); }, 150);
                         }
                     },
-                    error: function() {
-                        self.showError('خطا در ارتباط با سرور هنگام پردازش.');
+                    error: function(xhr) {
+                        self.showError(self.parseAjaxError(xhr, 'خطا در ارتباط با سرور هنگام پردازش.'));
                     }
                 });
             },
