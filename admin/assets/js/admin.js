@@ -438,6 +438,38 @@
                 $('.notice-success, .notice-error').fadeOut();
             }, 5000);
         }
+
+        // ===== مدیریت لاگ‌ها =====
+        $('#wem-clear-logs').on('click', function() {
+            if (!confirm('آیا از پاک کردن همه لاگ‌ها مطمئن هستید؟')) {
+                return;
+            }
+
+            var $button = $(this);
+            $button.prop('disabled', true).text('در حال پاکسازی...');
+
+            $.ajax({
+                url: wooExcelMng.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'woo_excel_mng_clear_logs',
+                    nonce: wooExcelMng.nonce
+                },
+                success: function(response) {
+                    if (response.success) {
+                        window.location.href = 'admin.php?page=woo-excel-mng-logs&tab=logs&logs_cleared=1';
+                        return;
+                    }
+
+                    alert('خطا: ' + (response.data || 'پاکسازی لاگ انجام نشد'));
+                    $button.prop('disabled', false).text('پاک کردن همه لاگ‌ها');
+                },
+                error: function() {
+                    alert('خطا در ارتباط با سرور');
+                    $button.prop('disabled', false).text('پاک کردن همه لاگ‌ها');
+                }
+            });
+        });
         
     });
     

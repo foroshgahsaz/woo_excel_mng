@@ -16,6 +16,7 @@ if (!function_exists('woo_excel_mng_get_tab_icon')) {
             'shipping' => 'dashicons-cart',
             'formulas' => 'dashicons-calculator',
             'settings' => 'dashicons-admin-settings',
+            'logs' => 'dashicons-media-text',
         );
         return isset($icons[$tab_key]) ? $icons[$tab_key] : 'dashicons-admin-generic';
     }
@@ -56,6 +57,9 @@ if (!function_exists('woo_excel_mng_get_tab_icon')) {
                     break;
                 case 'settings':
                     include WOO_EXCEL_MNG_PLUGIN_DIR . 'admin/views/settings-tab.php';
+                    break;
+                case 'logs':
+                    include WOO_EXCEL_MNG_PLUGIN_DIR . 'admin/views/logs-tab.php';
                     break;
             }
             ?>

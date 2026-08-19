@@ -320,6 +320,14 @@ class Woo_Excel_Mng_Products
             WC_Product_Variable::sync($product_id);
             wc_delete_product_transients($product_id);
         } catch (Throwable $e) {
+            if (class_exists('Woo_Excel_Mng_Logger')) {
+                Woo_Excel_Mng_Logger::exception(
+                    $e,
+                    array('product_id' => $product_id),
+                    'products'
+                );
+            }
+
             $errors[] = $e->getMessage();
         }
 

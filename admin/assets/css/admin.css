@@ -757,3 +757,64 @@
     margin-bottom: 3px;
     color: #d63638;
 }
+
+/* ===== لاگ‌ها ===== */
+.woo-excel-mng-logs .wem-logs-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 16px;
+}
+
+.woo-excel-mng-logs .wem-logs-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.woo-excel-mng-logs .wem-logs-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.woo-excel-mng-logs .wem-logs-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+    color: #646970;
+    font-size: 13px;
+}
+
+.woo-excel-mng-logs .wem-logs-viewer {
+    background: #1e1e1e;
+    border: 1px solid #2c2c2c;
+    border-radius: 6px;
+    max-height: 560px;
+    overflow: auto;
+    direction: ltr;
+    text-align: left;
+}
+
+.woo-excel-mng-logs .wem-logs-viewer pre {
+    margin: 0;
+    padding: 16px;
+    color: #d4d4d4;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.woo-excel-mng-logs .wem-logs-empty {
+    padding: 40px;
+    text-align: center;
+    color: #646970;
+    background: #f6f7f7;
+    border: 1px dashed #c3c4c7;
+    border-radius: 6px;
+}

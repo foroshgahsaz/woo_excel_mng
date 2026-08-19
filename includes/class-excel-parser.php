@@ -164,6 +164,10 @@ class Woo_Excel_Mng_Excel_Parser
                 'count' => count($products_data)
             );
         } catch (Throwable $e) {
+            if (class_exists('Woo_Excel_Mng_Logger')) {
+                Woo_Excel_Mng_Logger::exception($e, array('file_path' => $file_path), 'excel');
+            }
+
             return array(
                 'success' => false,
                 'message' => sprintf(__('خطا در خواندن فایل: %s', 'woo-excel-mng'), $e->getMessage())
@@ -254,6 +258,10 @@ class Woo_Excel_Mng_Excel_Parser
                 'count' => count($shipping_data)
             );
         } catch (Throwable $e) {
+            if (class_exists('Woo_Excel_Mng_Logger')) {
+                Woo_Excel_Mng_Logger::exception($e, array('file_path' => $file_path), 'shipping');
+            }
+
             return array(
                 'success' => false,
                 'message' => sprintf(__('خطا در خواندن فایل: %s', 'woo-excel-mng'), $e->getMessage())

@@ -950,6 +950,10 @@ public function add_meterage_to_quantity($args, $product) {
             $variation_data['woo_excel_has_formula'] = $this->is_formula_product($variation);
             $variation_data['woo_excel_uses_meterage'] = $this->product_uses_meterage($variation);
         } catch (\Throwable $e) {
+            if (class_exists('Woo_Excel_Mng_Logger')) {
+                Woo_Excel_Mng_Logger::exception($e, array('variation_id' => $variation->get_id()), 'frontend');
+            }
+
             $variation_data['woo_excel_has_formula'] = false;
             $variation_data['woo_excel_uses_meterage'] = false;
         }

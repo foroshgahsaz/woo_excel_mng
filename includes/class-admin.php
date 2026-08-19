@@ -30,6 +30,8 @@ class Woo_Excel_Mng_Admin
         // AJAX handlers برای import با نوار پیشرفت
         add_action('wp_ajax_woo_excel_mng_start_import', array($this, 'ajax_start_import'));
         add_action('wp_ajax_woo_excel_mng_process_batch', array($this, 'ajax_process_batch'));
+        add_action('wp_ajax_woo_excel_mng_clear_logs', array($this, 'ajax_clear_logs'));
+        add_action('admin_init', array($this, 'handle_log_download'));
     }
 
 
@@ -157,11 +159,102 @@ class Woo_Excel_Mng_Admin
             'woo-excel-mng-settings',
             array($this, 'render_settings_page')
         );
+
+        add_submenu_page(
+            'woo-excel-mng',
+            __('لاگ‌ها', 'woo-excel-mng'),
+            __('لاگ‌ها', 'woo-excel-mng'),
+            'manage_woocommerce',
+            'woo-excel-mng-logs',
+            array($this, 'render_logs_page')
+        );
     }
 
     /**
-     * بارگذاری فایل‌های CSS و JS
+     * لیست تب‌های پنل مدیریت
      */
+    private function get_admin_tabs()
+    {
+        return array(
+            'dashboard' => __('داشبورد', 'woo-excel-mng'),
+            'products'  => __('محصولات', 'woo-excel-mng'),
+            'shipping'  => __('حمل‌ونقل', 'woo-excel-mng'),
+            'formulas'  => __('فرمول‌ها', 'woo-excel-mng'),
+            'settings'  => __('تنظیمات', 'woo-excel-mng'),
+            'logs'      => __('لاگ‌ها', 'woo-excel-mng'),
+        );
+    }
+
+    /**
+     * دانلود فایل لاگ
+     */
+    public function handle_log_download()
+    {
+        if (!isset($_GET['wem_download_log']) || !isset($_GET['page']) || $_GET['page'] !== 'woo-excel-mng-logs') {
+            return;
+        }
+
+        if (!current_user_can('manage_woocommerce')) {
+            wp_die(__('شما مجوز لازم را ندارید.', 'woo-excel-mng'));
+        }
+
+        check_admin_referer('wem_download_log');
+
+        $file_name = isset($_GET['log_file']) ? sanitize_file_name(wp_unslash($_GET['log_file'])) : '';
+        $file_path = Woo_Excel_Mng_Logger::get_download_file_path($file_name);
+
+        if ($file_path === '' || !file_exists($file_path)) {
+            wp_die(__('فایل لاگ یافت نشد.', 'woo-excel-mng'));
+        }
+
+        nocache_headers();
+        header('Content-Type: text/plain; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . basename($file_path) . '"');
+        header('Content-Length: ' . filesize($file_path));
+        readfile($file_path);
+        exit;
+    }
+
+    /**
+     * AJAX: پاک کردن لاگ‌ها
+     */
+    public function ajax_clear_logs()
+    {
+        check_ajax_referer('woo_excel_mng_nonce', 'nonce');
+
+        if (!current_user_can('manage_woocommerce')) {
+            wp_send_json_error(__('شما مجوز لازم را ندارید.', 'woo-excel-mng'));
+        }
+
+        $deleted = Woo_Excel_Mng_Logger::clear_logs();
+        Woo_Excel_Mng_Logger::info('Log files cleared by admin', array('deleted' => $deleted), 'logger');
+
+        wp_send_json_success(array(
+            'deleted' => $deleted,
+            'message' => __('لاگ‌ها با موفقیت پاک شدند.', 'woo-excel-mng'),
+        ));
+    }
+
+    /**
+     * ثبت خطا در لاگر افزونه
+     */
+    private function log_plugin_error($message, array $context = array(), $channel = 'admin')
+    {
+        if (class_exists('Woo_Excel_Mng_Logger')) {
+            Woo_Excel_Mng_Logger::error($message, $context, $channel);
+        }
+    }
+
+    /**
+     * ثبت Exception در لاگر افزونه
+     */
+    private function log_plugin_exception(Throwable $exception, $channel = 'admin', array $context = array())
+    {
+        if (class_exists('Woo_Excel_Mng_Logger')) {
+            Woo_Excel_Mng_Logger::exception($exception, $context, $channel);
+        }
+    }
+
     public function enqueue_admin_assets($hook)
     {
         // فقط در صفحات افزونه
@@ -734,11 +827,14 @@ class Woo_Excel_Mng_Admin
 
             $library_error = $this->ensure_phpspreadsheet_available();
             if ($library_error !== '') {
+                $this->log_plugin_error($library_error, array(), 'import');
                 wp_send_json_error($library_error);
             }
 
             if (!Woo_Excel_Mng_Products::ensure_global_attributes()) {
-                wp_send_json_error(__('ویژگی‌های «رنگ» و «ضخامت» در ووکامرس ایجاد نشدند.', 'woo-excel-mng'));
+                $message = __('ویژگی‌های «رنگ» و «ضخامت» در ووکامرس ایجاد نشدند.', 'woo-excel-mng');
+                $this->log_plugin_error($message, array(), 'import');
+                wp_send_json_error($message);
             }
 
             if (!isset($_FILES['products_file']) || $_FILES['products_file']['error'] !== UPLOAD_ERR_OK) {
@@ -766,6 +862,7 @@ class Woo_Excel_Mng_Admin
             }
 
             if (!$parser_result['success']) {
+                $this->log_plugin_error($parser_result['message'], array('file' => $file['name']), 'import');
                 wp_send_json_error($parser_result['message']);
             }
 
@@ -804,8 +901,21 @@ class Woo_Excel_Mng_Admin
             $data_file = $this->save_import_data_file($batch_id, $all_rows);
 
             if ($data_file === '') {
-                wp_send_json_error(__('خطا در ذخیره داده‌های import. لطفاً دسترسی پوشه uploads را بررسی کنید.', 'woo-excel-mng'));
+                $message = __('خطا در ذخیره داده‌های import. لطفاً دسترسی پوشه uploads را بررسی کنید.', 'woo-excel-mng');
+                $this->log_plugin_error($message, array('batch_id' => $batch_id), 'import');
+                wp_send_json_error($message);
             }
+
+            Woo_Excel_Mng_Logger::info(
+                'Import queue prepared',
+                array(
+                    'batch_id'       => $batch_id,
+                    'products'       => count($product_queue),
+                    'variation_rows' => count($all_rows),
+                    'file_name'      => sanitize_text_field($file['name']),
+                ),
+                'import'
+            );
 
             set_transient($batch_id, array(
                 'data_file'      => $data_file,
@@ -825,6 +935,7 @@ class Woo_Excel_Mng_Admin
                 'product_names'    => wp_list_pluck($product_queue, 'name'),
             ));
         } catch (Throwable $e) {
+            $this->log_plugin_exception($e, 'import');
             wp_send_json_error(sprintf(__('خطا در شروع import: %s', 'woo-excel-mng'), $e->getMessage()));
         }
     }
@@ -898,6 +1009,28 @@ class Woo_Excel_Mng_Admin
             $updated = isset($result['updated']) ? intval($result['updated']) : 0;
             $errors  = isset($result['errors']) && is_array($result['errors']) ? $result['errors'] : array();
 
+            if (!empty($errors)) {
+                $this->log_plugin_error(
+                    'Product import returned errors',
+                    array(
+                        'product_id'   => $product_id,
+                        'product_name' => $product_name,
+                        'errors'       => $errors,
+                    ),
+                    'import'
+                );
+            }
+
+            Woo_Excel_Mng_Logger::info(
+                'Product import batch processed',
+                array(
+                    'product_id' => $product_id,
+                    'created'    => $created,
+                    'updated'    => $updated,
+                ),
+                'import'
+            );
+
             $state['created'] += $created;
             $state['updated'] += $updated;
             $state['errors']   = array_merge($state['errors'], $errors);
@@ -944,6 +1077,7 @@ class Woo_Excel_Mng_Admin
                 ),
             ));
         } catch (Throwable $e) {
+            $this->log_plugin_exception($e, 'import', array('batch_id' => isset($batch_id) ? $batch_id : ''));
             wp_send_json_error(sprintf(__('خطا در پردازش import: %s', 'woo-excel-mng'), $e->getMessage()));
         }
     }
@@ -979,13 +1113,7 @@ class Woo_Excel_Mng_Admin
     public function render_main_page()
     {
         $current_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'dashboard';
-        $tabs = array(
-            'dashboard' => __('داشبورد', 'woo-excel-mng'),
-            'products' => __('محصولات', 'woo-excel-mng'),
-            'shipping' => __('حمل‌ونقل', 'woo-excel-mng'),
-            'formulas' => __('فرمول‌ها', 'woo-excel-mng'),
-            'settings' => __('تنظیمات', 'woo-excel-mng'),
-        );
+        $tabs = $this->get_admin_tabs();
 
         include WOO_EXCEL_MNG_PLUGIN_DIR . 'admin/views/main-page.php';
     }
@@ -996,13 +1124,7 @@ class Woo_Excel_Mng_Admin
     public function render_settings_page()
     {
         $current_tab = 'settings';
-        $tabs = array(
-            'dashboard' => __('داشبورد', 'woo-excel-mng'),
-            'products' => __('محصولات', 'woo-excel-mng'),
-            'shipping' => __('حمل‌ونقل', 'woo-excel-mng'),
-            'formulas' => __('فرمول‌ها', 'woo-excel-mng'),
-            'settings' => __('تنظیمات', 'woo-excel-mng'),
-        );
+        $tabs = $this->get_admin_tabs();
         include WOO_EXCEL_MNG_PLUGIN_DIR . 'admin/views/main-page.php';
     }
 
@@ -1012,13 +1134,7 @@ class Woo_Excel_Mng_Admin
     public function render_products_page()
     {
         $current_tab = 'products';
-        $tabs = array(
-            'dashboard' => __('داشبورد', 'woo-excel-mng'),
-            'products' => __('محصولات', 'woo-excel-mng'),
-            'shipping' => __('حمل‌ونقل', 'woo-excel-mng'),
-            'formulas' => __('فرمول‌ها', 'woo-excel-mng'),
-            'settings' => __('تنظیمات', 'woo-excel-mng'),
-        );
+        $tabs = $this->get_admin_tabs();
         include WOO_EXCEL_MNG_PLUGIN_DIR . 'admin/views/main-page.php';
     }
 
@@ -1028,13 +1144,7 @@ class Woo_Excel_Mng_Admin
     public function render_shipping_page()
     {
         $current_tab = 'shipping';
-        $tabs = array(
-            'dashboard' => __('داشبورد', 'woo-excel-mng'),
-            'products' => __('محصولات', 'woo-excel-mng'),
-            'shipping' => __('حمل‌ونقل', 'woo-excel-mng'),
-            'formulas' => __('فرمول‌ها', 'woo-excel-mng'),
-            'settings' => __('تنظیمات', 'woo-excel-mng'),
-        );
+        $tabs = $this->get_admin_tabs();
         include WOO_EXCEL_MNG_PLUGIN_DIR . 'admin/views/main-page.php';
     }
 
@@ -1044,13 +1154,17 @@ class Woo_Excel_Mng_Admin
     public function render_formulas_page()
     {
         $current_tab = 'formulas';
-        $tabs = array(
-            'dashboard' => __('داشبورد', 'woo-excel-mng'),
-            'products' => __('محصولات', 'woo-excel-mng'),
-            'shipping' => __('حمل‌ونقل', 'woo-excel-mng'),
-            'formulas' => __('فرمول‌ها', 'woo-excel-mng'),
-            'settings' => __('تنظیمات', 'woo-excel-mng'),
-        );
+        $tabs = $this->get_admin_tabs();
+        include WOO_EXCEL_MNG_PLUGIN_DIR . 'admin/views/main-page.php';
+    }
+
+    /**
+     * رندر صفحه لاگ‌ها
+     */
+    public function render_logs_page()
+    {
+        $current_tab = 'logs';
+        $tabs = $this->get_admin_tabs();
         include WOO_EXCEL_MNG_PLUGIN_DIR . 'admin/views/main-page.php';
     }
 }
