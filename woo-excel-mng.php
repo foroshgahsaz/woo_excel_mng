@@ -4,23 +4,35 @@
  * Plugin Name: مدیریت محصولات متغیر ووکامرس
   
  * Description: مدیریت انبوه محصولات متغیر ووکامرس از طریق Excel، مدیریت حمل‌ونقل پیشرفته و فرمول‌های قیمت‌گذاری پویا
- * Version: 2.2.0
+ * Version: 2.2.1
  * Author: محمد سیفی
  
  * Text Domain: woo-excel-mng
  * Domain Path: /languages
- * Requires at least: 5.0
+ * Requires at least: 5.8
  * Requires PHP: 7.4
  * Requires WooCommerce: 5.0
- * Tested up to: 8.9
+ * Tested up to: 6.7
  * WC requires at least: 5.0
- * WC tested up to: 8.9
+ * WC tested up to: 11.0
  */
 
 // جلوگیری از دسترسی مستقیم
 if (!defined('ABSPATH')) {
     exit;
 }
+
+/**
+ * اعلام سازگاری با قابلیت‌های جدید ووکامرس (HPOS و Cart/Checkout Blocks)
+ */
+add_action('before_woocommerce_init', function () {
+    if (!class_exists('\Automattic\WooCommerce\Utilities\FeaturesUtil')) {
+        return;
+    }
+
+    \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('custom_order_tables', __FILE__, true);
+    \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility('cart_checkout_blocks', __FILE__, true);
+});
 
 // بررسی وجود ووکامرس
 if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
@@ -33,7 +45,7 @@ if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get
 }
 
 // تعریف ثابت‌های افزونه
-define('WOO_EXCEL_MNG_VERSION', '1.0.35');
+define('WOO_EXCEL_MNG_VERSION', '2.2.1');
 define('WOO_EXCEL_MNG_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('WOO_EXCEL_MNG_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('WOO_EXCEL_MNG_PLUGIN_BASENAME', plugin_basename(__FILE__));
